@@ -9,10 +9,12 @@ namespace HL7Backloader
 	{
 		public static void Main (string[] args)
 		{
-			string f = "";
 			List<string> lines = new List<string>();
 			Console.WriteLine ("Enter path and file name");
-			f = Console.ReadLine ();
+			string f = Console.ReadLine ();
+
+			Console.WriteLine ("Enter destination path for HL7 files");
+			string outPath = Console.ReadKey ();
 
 			using (StreamReader r = new StreamReader(f))
 			{
@@ -33,17 +35,17 @@ namespace HL7Backloader
 			foreach (string row in lines)
 			{
 				string[] values = row.Split('|');
-				CreateHL7Message(values[0], values[1]);
+				CreateHL7Message(values[0], values[1], outPath);
 				fileCount++;
 			}
 			Console.WriteLine(fileCount + " HL7 File Created");
 			Console.ReadLine();
 		}
 
-		static void CreateHL7Message(string accountNumber, string queryValue)
+		static void CreateHL7Message(string accountNumber, string queryValue, string outPath)
 		{
 			string dt = DateTime.Now.ToString("yyyyMMddHHmmss");
-			string outFilePath = @"C:\Users\sprouse.UCHS_DOM1\Desktop\ADMPL3_01\ADMPL3_" + dt + "_" + accountNumber + ".ecj";
+			string outFilePath = outPath + dt + "_" + accountNumber + ".ecj";
 			HL72Message outMessage = new HL72Message();
 			string mshSeg = @"MSH|^~\&|BOOST|BOOST|HIS|BOOST|" + dt + "||ORU^R01|" + dt + "|P|2.5";
 			string pidSeg = @"PID|1|||||||||||||||||" + accountNumber + "||";
