@@ -14,7 +14,7 @@ namespace HL7Backloader
 			string f = Console.ReadLine ();
 
 			Console.WriteLine ("Enter destination path for HL7 files");
-			string outPath = Console.ReadKey ();
+			string outPath = Console.ReadLine ();
 
 			using (StreamReader r = new StreamReader(f))
 			{
