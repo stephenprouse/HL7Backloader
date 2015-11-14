@@ -11,10 +11,39 @@ namespace HL7Backloader
 		{
 			List<string> lines = new List<string>();
 			Console.WriteLine ("Enter path and file name");
+			Console.WriteLine ("Current path = " + AppDomain.CurrentDomain.BaseDirectory);
+			bool fileOk = false;
+			bool dirOk = false;
+			string outPath = AppDomain.CurrentDomain.BaseDirectory;
 			string f = Console.ReadLine ();
 
-			Console.WriteLine ("Enter destination path for HL7 files");
-			string outPath = Console.ReadLine ();
+			while (fileOk == false) {
+				if (File.Exists (f)) {
+					Console.WriteLine ("Good. " + f + " exists");
+					fileOk = true;
+				} else {
+					Console.WriteLine (f + " does not exist, enter file name again: ");
+					f = Console.ReadLine ();
+				}		
+			}
+
+			while (dirOk == false) {
+				Console.WriteLine ("Enter destination path for HL7 files or just Enter for current directory");
+				outPath = Console.ReadLine ();
+				if (outPath == "") {
+					outPath = AppDomain.CurrentDomain.BaseDirectory;
+				} else {
+				}
+
+				if (Directory.Exists(outPath)) {
+					Console.WriteLine("Good. " + outPath + " exists");
+					dirOk = true;
+				} else {
+					Console.WriteLine("Bad. " +  outPath + " Directory does not exist!");
+				}
+
+			
+			}
 
 			// reads file till end
 			using (StreamReader r = new StreamReader(f))
@@ -71,6 +100,7 @@ namespace HL7Backloader
 			outMessage.AppendSegment(pidSeg);
 			outMessage.AppendSegment(obrSeg);
 			outMessage.AppendSegment(obxSeg1);
+
 			File.WriteAllBytes(outFilePath, Encoding.ASCII.GetBytes(outMessage.ToString()));
 		}
 	}
