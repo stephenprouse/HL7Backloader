@@ -101,7 +101,13 @@ namespace HL7Backloader
 			outMessage.AppendSegment(obrSeg);
 			outMessage.AppendSegment(obxSeg1);
 
-			File.WriteAllBytes(outFilePath, Encoding.ASCII.GetBytes(outMessage.ToString()));
+			//File.WriteAllBytes(outFilePath, Encoding.ASCII.GetBytes(outMessage.ToString()));
+
+			// added below to test out HL7ToXmlConverter class
+			// 
+			string xmlMessag = outMessage.ToString();
+			string HL7asXml = HL7ToXmlConverter.ConvertToXml (xmlMessag);
+			File.WriteAllBytes(outFilePath, Encoding.ASCII.GetBytes(HL7asXml));
 		}
 	}
 }
